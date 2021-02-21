@@ -619,6 +619,8 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Build: 1
+    Collab: 1
     UNet: 1
   luminIcon:
     m_Name: 
@@ -632,10 +634,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 70d5ea23-efc1-48a0-be2b-78a0fcf455f1
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: SE2250_Project_Group7
+  organizationId: ebodnar
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
