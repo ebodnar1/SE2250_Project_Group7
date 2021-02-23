@@ -4,7 +4,7 @@ Group 7:
 
 Ethan Bodnar, 
 Warren Sucklal, 
-Liam Sharkey, 
+Wiliam Sharkey, 
 Shirley Wang
 
 TA: Fadi
