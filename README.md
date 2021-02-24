@@ -3,7 +3,7 @@
 Group 7:
 
 Ethan Bodnar (ebodnar), 
-Warren Sucklal (wsuckla), 
+Warren Sucklal (wsucklal), 
 Wiliam Sharkey (wsharke), 
 Shirley Wang (swan484)
 
