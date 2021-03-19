@@ -2,9 +2,9 @@
  
 Group 7:
 
-Ethan Bodnar, 
-Warren Sucklal, 
-Wiliam Sharkey, 
-Shirley Wang
+Ethan Bodnar (ebodnar), 
+Warren Sucklal (wsucklal), 
+Wiliam Sharkey (wsharke), 
+Shirley Wang (swan484)
 
 TA: Fadi
