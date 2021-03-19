@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5177594000928222809}
   - component: {fileID: 5177594000928222814}
   - component: {fileID: 5177594000928222815}
-  - component: {fileID: 5177593999847971255}
+  - component: {fileID: -4974371240595983573}
   m_Layer: 0
   m_Name: Rock10
   m_TagString: Untagged
@@ -80,8 +80,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5177593999847971255
-BoxCollider:
+--- !u!64 &-4974371240595983573
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,6 +90,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.9, y: 3, z: 1.5}
-  m_Center: {x: 0.122738026, y: 0.5125851, z: 0.24492061}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: a0071168e779c6a4591fac5de3ee9957, type: 3}

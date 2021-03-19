@@ -5,9 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Terrain
-  - Chemical
-  - Civil
-  - Electrical
+  - Limb
+  - Weapon
+  - Projectile
+  - Enemy
+  - EnemyLimb
+  - Leg
+  - Pickup
+  - Potion
   layers:
   - Default
   - TransparentFX
