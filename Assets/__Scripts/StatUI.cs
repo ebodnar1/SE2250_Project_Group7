@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class StatUI : MonoBehaviour
 {
-
+    //Tracking variables
     public bool statScreenEnabled;
     public GameObject statScreen;
     private Player player;
@@ -21,17 +21,19 @@ public class StatUI : MonoBehaviour
     public Text SkillAvailableText; //text for number of available skill points
     public Text instructions;
 
+    //Get the current player and thresholds for each upgrade
     private void Start()
     {
         player = GetComponent<Player>();
         thresholdA = thresholdH = thresholdS = 3;
     }
 
+    //If the user presses 'e', toggle the inventory on
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            statScreenEnabled = !statScreenEnabled; //toggle inventory
+            statScreenEnabled = !statScreenEnabled; 
         }
 
         if (statScreenEnabled == true)
@@ -43,11 +45,12 @@ public class StatUI : MonoBehaviour
             statScreen.SetActive(false);
         }
 
-
+        //Continuously update the stat text and check for new instructions
         UpdateStatText();
         SetInstructions();
     }
 
+    //Different instructions in the inventory for different levels
     void SetInstructions()
     {
         switch (SceneManager.GetActiveScene().name)
@@ -65,14 +68,16 @@ public class StatUI : MonoBehaviour
         }
     }
 
+    //Set all the stat values to the updated values
     void UpdateStatText()
     {
-        SpeedText.text = Player.GetSpeed().ToString(); //setting text values for stat menu screen
+        SpeedText.text = Player.GetSpeed().ToString(); 
         HealthText.text = Player.GetHealth().ToString();
         StrengthText.text = Player.GetStrength().ToString();
         SkillAvailableText.text = "" + player.GetXPPoints();
     }
 
+    //Increase the player's attack by 1 point
     public void IncrementAttack()
     {
         if (player.GetXPPoints() >= thresholdA)
@@ -83,6 +88,7 @@ public class StatUI : MonoBehaviour
         }
     }
 
+    //Increase the player's speed by 1 point
     public void IncrementSpeed()
     {
         if (player.GetXPPoints() >= thresholdS)
@@ -93,6 +99,7 @@ public class StatUI : MonoBehaviour
         }
     }
 
+    //Increase the player's health by 10 points
     public void IncrementHealth()
     {
         if (player.GetXPPoints() >= thresholdH)

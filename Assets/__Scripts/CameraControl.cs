@@ -61,12 +61,6 @@ public class CameraControl : MonoBehaviour
         transform.position = player.transform.position - (rotation * offset);
 
         transform.LookAt(player.transform);
-        /*
-        Vector3 moveTo = player.transform.position + offset;
-        Vector3 position = Vector3.Lerp(transform.position, moveTo, Time.deltaTime * damping);
-        transform.position = position;
-        transform.LookAt(player.transform);
-        */
 
         Invoke("CheckPickups", 5.0f);
     }

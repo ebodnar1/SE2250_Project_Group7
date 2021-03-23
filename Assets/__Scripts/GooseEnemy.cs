@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Child of the Enemy class
 public class GooseEnemy : Enemy
 {
     public GameObject projectile;
@@ -22,8 +23,10 @@ public class GooseEnemy : Enemy
         }
 
         playerTransform = currentPlayer.transform;
+        canMove = true;
     }
 
+    //Attack if the enemy is within 20 points of distance of the player, otherwise keep moving
     public override void LateUpdate()
     {
         if ((transform.position - currentPlayer.transform.position).magnitude <= 20.0f)
@@ -36,31 +39,41 @@ public class GooseEnemy : Enemy
         }
     }
 
+    //Attacking script
     private void Attack(bool proceed)
     {
-        if (!proceed)
+        //See if the enemy is able to move
+        if (canMove)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(playerTransform.position - transform.position), rotationSpeed * Time.deltaTime * 50f);
-
-            Move();
-
-            rigid.MovePosition(rigid.position + transform.forward * moveSpeed * Time.deltaTime);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(-playerTransform.position + transform.position), rotationSpeed * Time.deltaTime * 50f);
-
-            Move();
-
-            if (!canShoot)
+            //See if the enemy should move (is further than 20 points of distance away)
+            if (!proceed)
             {
-                StartCoroutine("Shoot");
+                //Movement
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(playerTransform.position - transform.position), rotationSpeed * Time.deltaTime * 50f);
+
+                Move();
+
+                rigid.MovePosition(rigid.position + transform.forward * moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                //Look at the player
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(-playerTransform.position + transform.position), rotationSpeed * Time.deltaTime * 50f);
+
+                Move();
+
+                //Enemy shoots (if it can)
+                if (!canShoot)
+                {
+                    StartCoroutine("Shoot");
+                }
             }
         }
     }
 
+    //Movement control
     private void Move()
     {
         Vector3 eulerRotation = transform.rotation.eulerAngles;
@@ -69,6 +82,7 @@ public class GooseEnemy : Enemy
         transform.position = new Vector3(transform.position.x, 2.55f, transform.position.z);
     }
 
+    //Pause 2s between shots
     IEnumerator Shoot()
     {
         canShoot = true;
@@ -77,6 +91,7 @@ public class GooseEnemy : Enemy
         canShoot = false;
     }
 
+    //Create a projectile and launch it towards the player, destroying this projectile after 2s
     private void Fire()
     {
         GameObject fired = Instantiate(projectile);

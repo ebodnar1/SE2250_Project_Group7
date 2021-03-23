@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public float moveSpeed = 50.0f;
     public float health = 30.0f;
     protected GameObject currentPlayer;
+    protected bool canMove;
 
     private GameObject[] limbs;
     protected Animator[] animators;
@@ -43,20 +44,25 @@ public class Enemy : MonoBehaviour
         {
             animators[i] = limbs[i].GetComponent<Animator>();
         }
+
+        canMove = true;
     }
 
     //Enemy movement script using transforms
     public virtual void LateUpdate()
     {
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(playerTransform.position - transform.position), rotationSpeed * Time.deltaTime * 50f);
+        if(canMove)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(playerTransform.position - transform.position), rotationSpeed * Time.deltaTime * 50f);
 
-        Vector3 eulerRotation = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(0f, eulerRotation.y, 0f);
+            Vector3 eulerRotation = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(0f, eulerRotation.y, 0f);
 
-        transform.position = new Vector3(transform.position.x, 2.55f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 2.55f, transform.position.z);
 
-        rigid.MovePosition(rigid.position + transform.forward * moveSpeed * Time.deltaTime);
+            rigid.MovePosition(rigid.position + transform.forward * moveSpeed * Time.deltaTime);
+        }
     }
 
     //On collision with a trigger character weapon
@@ -79,31 +85,71 @@ public class Enemy : MonoBehaviour
                 Destroy(collider.gameObject);
             }
 
+            //Knock the enemy back and see if it should be destroyed
+            KnockBack();
+            CheckDestroy();
+        }
+        //If the civil special hits the enemy, destroy it and drop XP/HP
+        if (collider.gameObject.name.Equals("CivilSpecial(Clone)"))
+        {
+            Destroy(gameObject);
+            EnemyDrops();
+        }
+        //If the electrical special hits the enemy, damage it slightly and stun it for 5 seconds
+        if (collider.gameObject.name.Equals("Shockwave"))
+        {
+            canMove = false;
+            health -= 10.0f;
+            Invoke("ResumeMovement", 5.0f);
+        }
+    }
+
+    //If an enemy is in the chemical special aura, continuously damage it for 0.5 damage per frame
+    private void OnTriggerStay(Collider collider)
+    {
+        if (collider.gameObject.name.Equals("SpecialActivator"))
+        {
+            health -= 0.5f;
             CheckDestroy();
         }
     }
 
+    //Allows enemies to move again
+    protected void ResumeMovement()
+    {
+        canMove = true;
+    }
+
+    //See if the enemy is out of health
     private void CheckDestroy()
     {
         if(health <= 0.0f)
         {
             Destroy(gameObject);
-            int xpDrop = Random.Range(0, 5);
-            for(int i = 0; i < xpDrop; i++)
-            {
-                GameObject newDrop = Instantiate(xpPrefab);
-                newDrop.transform.position = transform.position;
-            }
-
-            int hpDrop = Random.Range(0, 9);
-            if(hpDrop == 0)
-            {
-                GameObject newDrop = Instantiate(hpPrefab);
-                newDrop.transform.position = transform.position;
-            }
+            EnemyDrops();
         }
     }
 
+    //Drop a random amount of XP between 1 and 5 points
+    //There is a 1/10 chance of getting a HP potion drop
+    private void EnemyDrops()
+    {
+        int xpDrop = Random.Range(1, 5);
+        for (int i = 0; i < xpDrop; i++)
+        {
+            GameObject newDrop = Instantiate(xpPrefab);
+            newDrop.transform.position = transform.position;
+        }
+
+        int hpDrop = Random.Range(0, 9);
+        if (hpDrop == 0)
+        {
+            GameObject newDrop = Instantiate(hpPrefab);
+            newDrop.transform.position = transform.position;
+        }
+    }
+
+    //Knock an enemy backwards
     private void KnockBack()
     {
         if (!this.name.Equals("GooseEnemy(Clone)"))
