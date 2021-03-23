@@ -3714,7 +3714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 503564594}
   damping: 3
-  pickupPrefab: {fileID: 5121791996455542791, guid: 35f3e063c776f452aaee5f342cd64bff,
+  pickupPrefab: {fileID: 9086391573484700167, guid: b63cd2543da2946e59023751e398f6fe,
     type: 3}
 --- !u!4 &356899417 stripped
 Transform:
@@ -5505,7 +5505,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 503564599}
   cam: {fileID: 353063143}
-  skillAvailable: 0
   angle: 0
   turnSmoothTime: 0.2
 --- !u!136 &503564601
