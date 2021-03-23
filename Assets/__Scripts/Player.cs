@@ -6,18 +6,20 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public CharacterController controller;
-
-    //currently public for debugging use
     public Transform cam;
-    protected static float speed; //initializing stat variables
+
+    //Static stat variables
+    protected static float speed; 
     protected static int health; 
     protected static int strength;
-    public int skillAvailable;
+    protected int skillAvailable;
+    protected int xpPoints;
+
+    //Movement fields
     public float angle;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 180;
     private Rigidbody rb;
-    protected int xpPoints;
     
     //for the animations
     private GameObject[] limbs;
@@ -128,6 +130,7 @@ public class Player : MonoBehaviour
 
     public void ResetStats()
     {
+        //Set the predefined stats of the player
         int[,] playerStats = { { 120, 8, 10 }, { 80, 10, 12 }, { 100, 12, 8 } };
         switch (activePlayer.name)
         {
@@ -152,6 +155,7 @@ public class Player : MonoBehaviour
                 break;
         }
 
+        //Set the player's XP to 0
         xpPoints = 0;
     }
 
@@ -173,23 +177,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    /*
-    void IncrementStat(int stat)
-    {
-        if (skillAvailable > 0)
-        {
-            stat++;
-            skillAvailable--;
-        }
-
-        UpdateStatText();
-    }
-    */
-
+    //Collision/damage handling
     private void OnTriggerEnter(Collider collider)
     {
+        //Check if the player is immune currently
         if (!immune)
         {
+            //Damage the player for 5 if hit by a goose projectile
             if (collider.gameObject.name.Equals("GooseProjectile(Clone)"))
             {
                 Destroy(collider.gameObject);
@@ -197,6 +191,7 @@ public class Player : MonoBehaviour
             }
             StartCoroutine(Immunity());
         }
+        //Increase the player's XP or HP if they contact a potion
         if (collider.gameObject.CompareTag("Potion")){
             switch (collider.gameObject.name)
             {
@@ -212,11 +207,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    //If the player collides with an enemy, damage them by 10
     private void OnCollisionEnter(Collision collision)
     {
         if (!immune)
         {
-            if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("Enemy"))
+            if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("EnemyLimb"))
             {
                 health -= 10;
             }
@@ -224,6 +220,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Make the player immune for 1s after taking damage
     IEnumerator Immunity()
     {
         immune = true;
@@ -231,6 +228,8 @@ public class Player : MonoBehaviour
         immune = false;
     }
 
+    //Setters and getters for strength (attack), speed, health, and XP
+    //Allows these to be values to be accessible and editable by the stats UI
     public void SetStrength(int str)
     {
         strength = str;

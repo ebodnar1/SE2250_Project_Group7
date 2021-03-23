@@ -141,6 +141,10 @@ public class Weapon : MonoBehaviour
         Explode(newPotion);
     }
 
+    /*
+     Play the exploding animation and enable the isTrigger collider, destroying the
+     'bomb' after 1s (length of animation)
+    */
     void Explode(GameObject bomb)
     {
         bomb.GetComponent<SphereCollider>().enabled = true;

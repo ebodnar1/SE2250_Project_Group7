@@ -10,7 +10,7 @@ public class DeathHandle : MonoBehaviour
     public GameObject deathScreen;
     private Player player;
 
-
+    //Player is not dead, and set the death screen to inactive
     private void Start()
     {
         died = false;
@@ -18,7 +18,7 @@ public class DeathHandle : MonoBehaviour
         player = GetComponent<Player>();
     }
 
-    // Update is called once per frame
+    //If the player died, made the death screen active
     void Update()
     {
         if (died == true)
@@ -30,9 +30,11 @@ public class DeathHandle : MonoBehaviour
             deathScreen.SetActive(false);
         }
 
+        //Check if the player is dead
         CheckDead();
     }
 
+    //If the player's health is 0 or less, they are dead
     private void CheckDead()
     {
         if(Player.GetHealth() <= 0)
@@ -41,6 +43,7 @@ public class DeathHandle : MonoBehaviour
         }
     }
 
+    //Load the scene again if the player clicks "Play Again" on the death screen UI
     public void Restart()
     {
         SceneManager.LoadScene("Scene1");

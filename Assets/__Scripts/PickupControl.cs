@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PickupControl : MonoBehaviour
 {
-    // Update is called once per frame
+    //Continuously rotate the pickups
     void Update()
     {
         transform.Rotate(new Vector3(2, 2, 2));

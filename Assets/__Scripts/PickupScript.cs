@@ -11,14 +11,14 @@ public class PickupScript : MonoBehaviour
     }
 
     //If the pickup is 'in' the terrain, move it outside
-    //Otherwise, if the pickup collides with something that is not an emey (or terrain), destroy it
+    //Otherwise, if the pickup collides with the player, destroy it
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.CompareTag("Terrain"))
         {
             transform.position += new Vector3(1, 0, 0);
         }
-        else if(!collider.gameObject.CompareTag("Enemy"))
+        else if(collider.gameObject.name.Equals("Player"))
         {
             Destroy(gameObject);
         }
