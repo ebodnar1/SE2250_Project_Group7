@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //Singleton Component
+    static public Player S;
+
     public CharacterController controller;
     public Transform cam;
-
+     
     //Static stat variables
     protected static float speed; 
     protected static int health; 
@@ -61,6 +64,16 @@ public class Player : MonoBehaviour
         }
 
         LimbsMove();
+
+        //Singleton Awake Component
+        if (S == null)
+        {
+            S = this;
+        }
+        else
+        {
+            Debug.LogError("Hero.Awake() -  Attmepted to Assign second Hero.S");
+        }
 
     }
    
