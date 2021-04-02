@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -16,13 +17,18 @@ public class Player : MonoBehaviour
     protected static int health; 
     protected static int strength;
     protected int skillAvailable;
-    protected int xpPoints;
+    protected static int xpPoints;
+
+    //For upgraded special attack
+    private int xpSum;
+    private static int specialXP;
+    private bool upgradedSpecialAttack;
+    private SpecialAttack spec;
 
     //Movement fields
     public float angle;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 180;
-    private Rigidbody rb;
     
     //for the animations
     private GameObject[] limbs;
@@ -30,7 +36,6 @@ public class Player : MonoBehaviour
     private float vSpeed = 0;
     private Vector3 moveVeloc;
     private Animator[] rightArms;
-    private Animator attackArm;
 
     private GameObject activePlayer;
     private bool immune;
@@ -72,9 +77,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Hero.Awake() -  Attmepted to Assign second Hero.S");
+            Debug.LogError("Hero.Awake() -  Attempted to Assign second Hero.S");
         }
-
     }
    
 
@@ -90,13 +94,21 @@ public class Player : MonoBehaviour
             }
         }
 
-        ResetStats();
+        if (SceneManager.GetActiveScene().name.Equals("Scene1"))
+        {
+            ResetStats();
+        }
 
         moveVeloc = Vector3.zero;
-        rb = GetComponent<Rigidbody>();
 
         //Set all the character's animations to on
         LimbsMove();
+
+        //Initializes special XP fields
+        specialXP = 0;
+        xpSum = 0;
+        upgradedSpecialAttack = false;
+        spec = GetComponent<SpecialAttack>();
     }
 
     void FixedUpdate()
@@ -204,15 +216,20 @@ public class Player : MonoBehaviour
             }
             StartCoroutine(Immunity());
         }
+
         //Increase the player's XP or HP if they contact a potion
         if (collider.gameObject.CompareTag("Potion")){
             switch (collider.gameObject.name)
             {
                 case "XP(Clone)":
-                    xpPoints ++;
+                    int xpDrop = Random.Range(1, 5);
+
+                    xpPoints += xpDrop;
+                    xpSum += xpPoints;
+
                     Destroy(collider.gameObject);
                     break;
-                case "HealthPotion(Clone)":
+                case "HealthPickup(Clone)":
                     health += 20;
                     Destroy(collider.gameObject);
                     break;
@@ -221,14 +238,26 @@ public class Player : MonoBehaviour
     }
 
     //If the player collides with an enemy, damage them by 10
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (!immune)
         {
-            if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("EnemyLimb"))
+            //If the player gets hit by a crab or an explosion
+            if (collision.gameObject.name.Equals("Crab(Clone)") || collision.gameObject.name.Equals("CrabBomb"))
+            {
+                //Crabs deal 15 damage
+                health -= 15;
+
+                //Explosion reaction force for player
+                Vector3 explosion = new Vector3(-transform.forward.x, transform.up.y, -transform.forward.z);
+                controller.Move(2 * explosion);
+            }
+            //Otherwise decrease health by 10
+            else if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("EnemyLimb"))
             {
                 health -= 10;
             }
+            //Start immunity for 1 second
             StartCoroutine(Immunity());
         }
     }
@@ -239,6 +268,11 @@ public class Player : MonoBehaviour
         immune = true;
         yield return new WaitForSeconds(1f);
         immune = false;
+    }
+
+    public void UpgradedSpecial(bool upgrade)
+    {
+        upgradedSpecialAttack = upgrade;
     }
 
     //Setters and getters for strength (attack), speed, health, and XP
@@ -277,5 +311,23 @@ public class Player : MonoBehaviour
     public int GetXPPoints()
     {
         return xpPoints;
+    }
+
+    public void SetSpecialXP(int specX)
+    {
+        specialXP = specX;
+    }
+    public int GetSpecialXP()
+    {
+        return specialXP;
+    }
+
+    public int GetXPSum()
+    {
+        return xpSum;
+    }
+    public bool GetUpgradeStatus()
+    {
+        return upgradedSpecialAttack;
     }
 }

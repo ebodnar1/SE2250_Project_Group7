@@ -9,19 +9,38 @@ public class Spawner : MonoBehaviour
     public float spawnsPerSecond;
     public GameObject currentPlayer;
 
+    //Allows for toggling spawners on and off
+    public bool canSpawn;
+    private bool cooldown;
+
+    //Start the spawning, allow enemies to spawn
     void Awake()
     {
+        canSpawn = true;
         Invoke("SpawnEnemy", 1f / spawnsPerSecond);
     }
 
-    //Spawn a random enemy at the location of the spawner every 1 / spawnsPerSecond seconds
-    private void SpawnEnemy()
+    //If enemies can spawn, invoke the spawn function
+    private void FixedUpdate()
     {
-        int index = Random.Range(0, spawnedEnemies.Length);
-        GameObject spawned = Instantiate(spawnedEnemies[index]);
+        if (canSpawn)
+        {
+            StartCoroutine(SpawnEnemy());
+        }
+    }
 
-        spawned.transform.position = transform.position;
+    //Spawn a random enemy at the location of the spawner every 1 / spawnsPerSecond seconds
+    IEnumerator SpawnEnemy()
+    {
+        if (!cooldown)
+        {
+            cooldown = true;
+            int index = Random.Range(0, spawnedEnemies.Length);
+            GameObject spawned = Instantiate(spawnedEnemies[index]);
 
-        Invoke("SpawnEnemy", 1f / spawnsPerSecond);
+            spawned.transform.position = transform.position;
+            yield return new WaitForSeconds(1 / spawnsPerSecond);
+            cooldown = false;
+        }
     }
 }

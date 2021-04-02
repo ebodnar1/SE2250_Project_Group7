@@ -13,6 +13,7 @@ TagManager:
   - Leg
   - Pickup
   - Potion
+  - Cactus
   layers:
   - Default
   - TransparentFX

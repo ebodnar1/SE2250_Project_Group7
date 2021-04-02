@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
         }
 
         canMove = true;
+        MoveLimbs();
     }
 
     //Enemy movement script using transforms
@@ -65,8 +66,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void MoveLimbs()
+    {
+        for (int i = 0; i < limbs.Length; i++)
+        {
+            animators[i].enabled = true;
+        }
+    }
+
+    private void StopLimbs()
+    {
+        for (int i = 0; i < limbs.Length; i++)
+        {
+            animators[i].enabled = false;
+        }
+    }
+
     //On collision with a trigger character weapon
     private void OnTriggerEnter(Collider collider)
+    {
+        CollisionEvents(collider);
+    }
+
+    public void CollisionEvents(Collider collider)
     {
         if (collider.gameObject.CompareTag("Weapon") || collider.gameObject.CompareTag("Projectile"))
         {
@@ -87,7 +109,6 @@ public class Enemy : MonoBehaviour
 
             //Knock the enemy back and see if it should be destroyed
             KnockBack();
-            CheckDestroy();
         }
         //If the civil special hits the enemy, destroy it and drop XP/HP
         if (collider.gameObject.name.Equals("CivilSpecial(Clone)"))
@@ -95,6 +116,7 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
             EnemyDrops();
         }
+
         //If the electrical special hits the enemy, damage it slightly and stun it for 5 seconds
         if (collider.gameObject.name.Equals("Shockwave"))
         {
@@ -102,6 +124,7 @@ public class Enemy : MonoBehaviour
             health -= 10.0f;
             Invoke("ResumeMovement", 5.0f);
         }
+        CheckDestroy();
     }
 
     //If an enemy is in the chemical special aura, continuously damage it for 0.5 damage per frame
@@ -110,6 +133,19 @@ public class Enemy : MonoBehaviour
         if (collider.gameObject.name.Equals("SpecialActivator"))
         {
             health -= 0.5f;
+            CheckDestroy();
+        }
+        if (collider.gameObject.name.Equals("Earthquake"))
+        {
+            canMove = false;
+            health -= 0.2f;
+            CheckDestroy();
+            Invoke("ResumeMovement", 6f);
+        }
+        if (collider.gameObject.name.Equals("Shield"))
+        {
+            health -= 20.0f;
+            KnockBack();
             CheckDestroy();
         }
     }
@@ -134,12 +170,8 @@ public class Enemy : MonoBehaviour
     //There is a 1/10 chance of getting a HP potion drop
     private void EnemyDrops()
     {
-        int xpDrop = Random.Range(1, 5);
-        for (int i = 0; i < xpDrop; i++)
-        {
-            GameObject newDrop = Instantiate(xpPrefab);
-            newDrop.transform.position = transform.position;
-        }
+        GameObject xpDrop = Instantiate(xpPrefab);
+        xpDrop.transform.position = transform.position;
 
         int hpDrop = Random.Range(0, 9);
         if (hpDrop == 0)
@@ -152,7 +184,7 @@ public class Enemy : MonoBehaviour
     //Knock an enemy backwards
     private void KnockBack()
     {
-        if (!this.name.Equals("GooseEnemy(Clone)"))
+        if (this.name.Equals("Enemy(Clone)"))
         {
             rigid.MovePosition(rigid.position - transform.forward * 2);
         }

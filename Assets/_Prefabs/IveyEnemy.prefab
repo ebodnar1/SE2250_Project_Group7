@@ -139,8 +139,7 @@ MonoBehaviour:
   health: 40
   xpPrefab: {fileID: 8781179573736628338, guid: f86d603a80dce467d8c028d4eec29195,
     type: 3}
-  hpPrefab: {fileID: 2712282313018974634, guid: 161ebe74d43344baba6b0c2639c0914e,
-    type: 3}
+  hpPrefab: {fileID: 47014223432474702, guid: 566755a121671485d92b36b2f322b147, type: 3}
 --- !u!54 &6824303217910784978
 Rigidbody:
   m_ObjectHideFlags: 0

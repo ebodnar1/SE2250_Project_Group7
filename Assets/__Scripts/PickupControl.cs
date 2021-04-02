@@ -7,6 +7,19 @@ public class PickupControl : MonoBehaviour
     //Continuously rotate the pickups
     void Update()
     {
-        transform.Rotate(new Vector3(2, 2, 2));
+        RotateItem();
+    }
+
+    private void RotateItem()
+    {
+        switch (gameObject.name)
+        {
+            case "XP(Clone)":
+                transform.Rotate(new Vector3(1, 1, 1));
+                break;
+            case "HealthPickup(Clone)":
+                transform.Rotate(new Vector3(0, 2, 0));
+                break;
+        }
     }
 }

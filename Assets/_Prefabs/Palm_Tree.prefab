@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7312038915806389234}
   m_Layer: 0
   m_Name: Palm_Tree
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 6, z: 0.8}
-  m_Center: {x: -0.34729344, y: 2.7100756, z: -0.45656818}
+  m_Size: {x: 0.5, y: 6, z: 0.5}
+  m_Center: {x: 0, y: 2.7100756, z: 0}

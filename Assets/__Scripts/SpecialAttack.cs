@@ -9,7 +9,14 @@ public class SpecialAttack : MonoBehaviour
     public GameObject boulder;
     public GameObject shockwave;
     public GameObject aura;
+    public GameObject terrain;
+    public GameObject earthquake;
     private GameObject activePlayer;
+    private Player player;
+    private bool isUpgraded;
+    public GameObject shield;
+    public GameObject gun;
+    private Weapon weapon;
 
     // Get the current character and set the cooldown to 5s away
     void Start()
@@ -25,6 +32,10 @@ public class SpecialAttack : MonoBehaviour
                 activePlayer = possiblePlayers[i];
             }
         }
+
+        player = GetComponent<Player>();
+        isUpgraded = player.GetUpgradeStatus();
+        weapon = GetComponent<Weapon>();
     }
 
     //Increment the cooldown based on time elapsed since start/last special attack
@@ -32,8 +43,9 @@ public class SpecialAttack : MonoBehaviour
     void Update()
     {
         cooldown += Time.deltaTime;
+        float limit = isUpgraded ? 20.0f : 15.0f;
 
-        if (Input.GetKeyDown("x") && cooldown >= 15.0f)
+        if (Input.GetKeyDown("x") && cooldown >= limit)
         {
             switch (activePlayer.name)
             {
@@ -47,7 +59,6 @@ public class SpecialAttack : MonoBehaviour
                     ChemicalSpecial();
                     break;
             }
-
             cooldown = 0;
         }
     }
@@ -55,12 +66,20 @@ public class SpecialAttack : MonoBehaviour
     //Create a rock and set its position to be in front of and above the player
     private void CivilSpecial()
     {
-        GameObject civilRock = Instantiate(boulder);
+        if (!isUpgraded)
+        {
+            GameObject civilRock = Instantiate(boulder);
 
-        civilRock.transform.position = activePlayer.transform.position + (activePlayer.transform.forward * 25)
-            + new Vector3(0, 15.0f, 0);
+            civilRock.transform.position = activePlayer.transform.position + (activePlayer.transform.forward * 25)
+                + new Vector3(0, 15.0f, 0);
 
-        StartCoroutine(DropBoulder(civilRock));
+            StartCoroutine(DropBoulder(civilRock));
+        }
+        else
+        {
+            Animator terrainShake = terrain.GetComponent<Animator>();
+            StartCoroutine(Earthquake(terrainShake));
+        }
     }
 
     //Drop the rock after 1.2s and destroy it around when it hits the ground
@@ -74,14 +93,31 @@ public class SpecialAttack : MonoBehaviour
         Destroy(obj, 0.9f);
     }
 
+    IEnumerator Earthquake(Animator anim)
+    {
+        anim.enabled = true;
+        BoxCollider bc = earthquake.GetComponent<BoxCollider>();
+        bc.enabled = true;
+        yield return new WaitForSeconds(5f);
+        bc.enabled = false;
+        anim.enabled = false;
+    }
+
     //Enable the MeshRenderer and SphereCollider of the chemical aura
     private void ChemicalSpecial()
     {
-        MeshRenderer rend = aura.GetComponent<MeshRenderer>();
-        SphereCollider sph = aura.GetComponent<SphereCollider>();
-        rend.enabled = true;
-        sph.enabled = true;
-        StartCoroutine(AuraOff(rend, sph));
+        if (!isUpgraded)
+        {
+            MeshRenderer rend = aura.GetComponent<MeshRenderer>();
+            SphereCollider sph = aura.GetComponent<SphereCollider>();
+            rend.enabled = true;
+            sph.enabled = true;
+            StartCoroutine(AuraOff(rend, sph));
+        }
+        else
+        {
+            
+        }
     }
 
     //Disable the MeshRenderer and SphereCollider after 5 seconds
@@ -95,12 +131,21 @@ public class SpecialAttack : MonoBehaviour
     //Enable the SphereCollider and MeshRenderer of the shockwave
     private void ElectricalSpecial()
     {
-        Animator anim = shockwave.GetComponent<Animator>();
-        SphereCollider radius = shockwave.GetComponent<SphereCollider>();
-        MeshRenderer mr = shockwave.GetComponent<MeshRenderer>();
-        mr.enabled = true;
-        radius.enabled = true;
-        StartCoroutine(Shockwave(anim, radius, mr));
+        if (!isUpgraded)
+        {
+            Animator anim = shockwave.GetComponent<Animator>();
+            SphereCollider radius = shockwave.GetComponent<SphereCollider>();
+            MeshRenderer mr = shockwave.GetComponent<MeshRenderer>();
+            mr.enabled = true;
+            radius.enabled = true;
+            StartCoroutine(Shockwave(anim, radius, mr));
+        }
+        else
+        {
+            BoxCollider bc = shield.GetComponent<BoxCollider>();
+            MeshRenderer mr = shield.GetComponent<MeshRenderer>();
+            StartCoroutine(Shield(mr, bc));
+        }
     }
 
     //Enable the Animator and then after 1s (length of animation), disable all of these properties
@@ -112,4 +157,23 @@ public class SpecialAttack : MonoBehaviour
         c.enabled = false;
         m.enabled = false;
     }
+
+    IEnumerator Shield(MeshRenderer m, BoxCollider b)
+    {
+        gun.GetComponent<MeshRenderer>().enabled = false;
+        b.enabled = true;
+        m.enabled = true;
+        weapon.canAttack = false;
+        yield return new WaitForSeconds(7.5f);
+        weapon.canAttack = true;
+        b.enabled = false;
+        m.enabled = false;
+        gun.GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    public bool GetShieldStatus()
+    {
+        return shield.GetComponent<MeshRenderer>().enabled;
+    }
+
 }

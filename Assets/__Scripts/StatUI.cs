@@ -10,9 +10,9 @@ public class StatUI : MonoBehaviour
     public bool statScreenEnabled;
     public GameObject statScreen;
     private Player player;
-    private int thresholdS;
-    private int thresholdA;
-    private int thresholdH;
+    private static int thresholdS;
+    private static int thresholdA;
+    private static int thresholdH;
 
     //setting text values for inventory
     public Text SpeedText;
@@ -25,7 +25,10 @@ public class StatUI : MonoBehaviour
     private void Start()
     {
         player = GetComponent<Player>();
-        thresholdA = thresholdH = thresholdS = 3;
+        if (SceneManager.GetActiveScene().name.Equals("Scene1"))
+        {
+            thresholdA = thresholdH = thresholdS = 3;
+        }
     }
 
     //If the user presses 'e', toggle the inventory on
@@ -107,6 +110,15 @@ public class StatUI : MonoBehaviour
             player.SetHealth(Player.GetHealth() + 10);
             player.SetXPPoints(player.GetXPPoints() - thresholdH);
             thresholdH++;
+        }
+    }
+
+    public void UpgradeSpecialAttack()
+    {
+        if(player.GetXPSum() >= 50 && player.GetSpecialXP() >= 10)
+        {
+            player.SetSpecialXP(0);
+            player.UpgradedSpecial(true);
         }
     }
 }

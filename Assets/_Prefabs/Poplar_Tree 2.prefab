@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3367454}
   - component: {fileID: 2393902}
   m_Layer: 0
-  m_Name: Poplar_Tree
-  m_TagString: Untagged
+  m_Name: Poplar_Tree 2
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

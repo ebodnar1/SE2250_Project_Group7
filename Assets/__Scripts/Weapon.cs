@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
     private Animator[] rightArms;
     private Animator attackArm;
 
-    private bool canAttack;
+    public bool canAttack;
 
     private void Awake()
     {
@@ -73,7 +73,7 @@ public class Weapon : MonoBehaviour
     void LateUpdate()
     {
         //Press 'z' to attack
-        if (Input.GetKeyDown("z"))
+        if (Input.GetKeyDown("z") && canAttack)
         {
             switch (currentWeapon.name)
             {
@@ -81,16 +81,10 @@ public class Weapon : MonoBehaviour
                     ElectricalAttack();
                     break;
                 case ("GirderWeapon"):
-                    if (canAttack)
-                    {
-                        StartCoroutine(CivilAttack());
-                    }
+                    StartCoroutine(CivilAttack());
                     break;
                 case ("Potion"):
-                    if (canAttack)
-                    {
-                        StartCoroutine(ChemicalAttack());
-                    }
+                    StartCoroutine(ChemicalAttack());
                     break;
             }
         }

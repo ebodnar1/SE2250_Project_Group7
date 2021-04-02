@@ -23,24 +23,14 @@ public class CameraControl : MonoBehaviour
     {
         offset = player.transform.position - transform.position;
 
-        //Instantiate 6 pickup items for progression
-        GameObject newObj1 = Instantiate(pickupPrefab);
-        newObj1.transform.position = new Vector3(-95, 3, 95);
-
-        GameObject newObj2 = Instantiate(pickupPrefab);
-        newObj2.transform.position = new Vector3(95, 3, 95);
-
-        GameObject newObj3 = Instantiate(pickupPrefab);
-        newObj3.transform.position = new Vector3(-95, 3, -95);
-
-        GameObject newObj4 = Instantiate(pickupPrefab);
-        newObj4.transform.position = new Vector3(95, 3, -95);
-
-        GameObject newObj5 = Instantiate(pickupPrefab);
-        newObj5.transform.position = new Vector3(-6, 15, 60);
-
-        GameObject newObj6 = Instantiate(pickupPrefab);
-        newObj6.transform.position = new Vector3(7, 15, -30);
+        if (SceneManager.GetActiveScene().name.Equals("Scene1"))
+        {
+            StartLevel1();
+        }
+        else
+        {
+            StartLevel2();
+        }
 
         activePickups = GameObject.FindGameObjectsWithTag("Pickup");
     }
@@ -62,7 +52,7 @@ public class CameraControl : MonoBehaviour
 
         transform.LookAt(player.transform);
 
-        Invoke("CheckPickups", 5.0f);
+        CheckPickups();
     }
 
     //Check if there are any active pickups in the scene, and change the scene if there aren't
@@ -94,6 +84,53 @@ public class CameraControl : MonoBehaviour
     public int GetRemainingPickups()
     {
         return activePickups.Length;
+    }
+
+    private void StartLevel1()
+    {
+        //Instantiate 6 pickup items for progression
+
+        //COMMENTED OUT SO I CAN PASS LEVEL 1 EASIER
+        /*
+        GameObject newObj1 = Instantiate(pickupPrefab);
+        newObj1.transform.position = new Vector3(-95, 3, 95);
+
+        GameObject newObj2 = Instantiate(pickupPrefab);
+        newObj2.transform.position = new Vector3(95, 3, 95);
+
+        GameObject newObj3 = Instantiate(pickupPrefab);
+        newObj3.transform.position = new Vector3(-95, 3, -95);
+
+        GameObject newObj4 = Instantiate(pickupPrefab);
+        newObj4.transform.position = new Vector3(95, 3, -95);
+
+        GameObject newObj5 = Instantiate(pickupPrefab);
+        newObj5.transform.position = new Vector3(-6, 15, 60);
+        */
+
+        GameObject newObj6 = Instantiate(pickupPrefab);
+        newObj6.transform.position = new Vector3(7, 15, -30);
+    }
+
+    private void StartLevel2() {
+        //Instantiate 6 pickup items for progression
+        GameObject newObj1 = Instantiate(pickupPrefab);
+        newObj1.transform.position = new Vector3(113, 28, -113);
+
+        GameObject newObj2 = Instantiate(pickupPrefab);
+        newObj2.transform.position = new Vector3(88, 3, 88);
+
+        GameObject newObj3 = Instantiate(pickupPrefab);
+        newObj3.transform.position = new Vector3(-100, 3, 25);
+
+        GameObject newObj4 = Instantiate(pickupPrefab);
+        newObj4.transform.position = new Vector3(100, 3, -50);
+
+        GameObject newObj5 = Instantiate(pickupPrefab);
+        newObj5.transform.position = new Vector3(-72, 3, 120);
+
+        GameObject newObj6 = Instantiate(pickupPrefab);
+        newObj6.transform.position = new Vector3(-22, 3, 5);
     }
 
 }

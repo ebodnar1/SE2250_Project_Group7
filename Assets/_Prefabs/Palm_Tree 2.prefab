@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3339706}
   - component: {fileID: 2355238}
   m_Layer: 0
-  m_Name: Palm_Tree
-  m_TagString: Untagged
+  m_Name: Palm_Tree 2
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
