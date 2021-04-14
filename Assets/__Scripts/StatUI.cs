@@ -19,6 +19,9 @@ public class StatUI : MonoBehaviour
     public Text HealthText;
     public Text StrengthText;
     public Text SkillAvailableText; //text for number of available skill points
+    public GameObject upgradeSpecial;
+
+    public HealthBar healthScript;
     public Text instructions;
 
     //Get the current player and thresholds for each upgrade
@@ -29,6 +32,7 @@ public class StatUI : MonoBehaviour
         {
             thresholdA = thresholdH = thresholdS = 3;
         }
+        upgradeSpecial.SetActive(false);
     }
 
     //If the user presses 'e', toggle the inventory on
@@ -51,6 +55,7 @@ public class StatUI : MonoBehaviour
         //Continuously update the stat text and check for new instructions
         UpdateStatText();
         SetInstructions();
+        CheckSpecialAttackCriteria();
     }
 
     //Different instructions in the inventory for different levels
@@ -65,7 +70,7 @@ public class StatUI : MonoBehaviour
                 break;
             case "Scene2":
                 instructions.text = "Uh oh! Your teleporter moved you to the desert and broke when you arrived! " +
-                    "Quick, some more tools! Oh, and watch out for the fearsom desert creatures, NEW ENEMY NAME." +
+                    "Quick, some more tools! Oh, and watch out for the snakes and crabs in the desert!" +
                     " Press 'E' to close or reopen this menu.";
                 break;
         }
@@ -75,7 +80,7 @@ public class StatUI : MonoBehaviour
     void UpdateStatText()
     {
         SpeedText.text = Player.GetSpeed().ToString(); 
-        HealthText.text = Player.GetHealth().ToString();
+        HealthText.text = Player.GetMaxHealth().ToString();
         StrengthText.text = Player.GetStrength().ToString();
         SkillAvailableText.text = "" + player.GetXPPoints();
     }
@@ -107,18 +112,34 @@ public class StatUI : MonoBehaviour
     {
         if (player.GetXPPoints() >= thresholdH)
         {
+            player.SetMaxHealth(Player.GetMaxHealth() + 10);
+            healthScript.SetMaxHealth(Player.GetMaxHealth());
+
             player.SetHealth(Player.GetHealth() + 10);
+            healthScript.SetHealth(Player.GetHealth());
+
             player.SetXPPoints(player.GetXPPoints() - thresholdH);
             thresholdH++;
         }
     }
 
+    //Player must have accumulated 50 xp total and at least 4 special xp to upgrade their special attack
+    private void CheckSpecialAttackCriteria()
+    {
+        if (player.GetXPSum() >= 50 && player.GetSpecialXP() >= 4)
+        {
+            upgradeSpecial.SetActive(true);
+        }
+    }
+
+    //Set the player's special XP to 0, upgrade their special, and set the upgrade prompt to inactive
     public void UpgradeSpecialAttack()
     {
-        if(player.GetXPSum() >= 50 && player.GetSpecialXP() >= 10)
+        if(!player.GetUpgradeStatus())
         {
             player.SetSpecialXP(0);
             player.UpgradedSpecial(true);
+            upgradeSpecial.SetActive(false);
         }
     }
 }

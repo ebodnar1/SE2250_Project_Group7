@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float health = 30.0f;
     protected GameObject currentPlayer;
     protected bool canMove;
+    private Vector3 playerStartPos;
 
     private GameObject[] limbs;
     protected Animator[] animators;
@@ -24,9 +25,21 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        GetPlayer();
+
+        //Get all of the limbs
+        animators = gameObject.GetComponentsInChildren<Animator>();
+
+        canMove = true;
+        MoveLimbs();
+        playerStartPos = GameObject.Find("Ground").transform.position;
+    }
+
+    public void GetPlayer()
+    {
         //Find which player is active
         GameObject[] possiblePlayers = GameObject.FindGameObjectsWithTag("Player");
-        for(int i = 0; i < possiblePlayers.Length; i++)
+        for (int i = 0; i < possiblePlayers.Length; i++)
         {
             if (possiblePlayers[i].activeInHierarchy)
             {
@@ -34,19 +47,6 @@ public class Enemy : MonoBehaviour
             }
         }
         playerTransform = currentPlayer.transform;
-
-        //Get all of the limbs (via tag)
-        limbs = GameObject.FindGameObjectsWithTag("EnemyLimb");
-        animators = new Animator[limbs.Length];
-
-        //Initialize the animators array with all of the animations
-        for (int i = 0; i < limbs.Length; i++)
-        {
-            animators[i] = limbs[i].GetComponent<Animator>();
-        }
-
-        canMove = true;
-        MoveLimbs();
     }
 
     //Enemy movement script using transforms
@@ -68,17 +68,23 @@ public class Enemy : MonoBehaviour
 
     private void MoveLimbs()
     {
-        for (int i = 0; i < limbs.Length; i++)
+        if (name.Equals("IveyEnemy(Clone)") || name.Equals("GooseEnemy(Clone)"))
         {
-            animators[i].enabled = true;
+            foreach (Animator anim in animators)
+            {
+                anim.enabled = true;
+            }
         }
     }
 
     private void StopLimbs()
     {
-        for (int i = 0; i < limbs.Length; i++)
+        if (name.Equals("IveyEnemy(Clone)") || name.Equals("GooseEnemy(Clone)"))
         {
-            animators[i].enabled = false;
+            foreach (Animator anim in animators)
+            {
+                anim.enabled = false;
+            }
         }
     }
 
@@ -117,13 +123,20 @@ public class Enemy : MonoBehaviour
             EnemyDrops();
         }
 
+        //Do 10 damage if the enemy is hit by an acid raindrop
+        if (collider.gameObject.name.Equals("Raindrop(Clone)"))
+        {
+            health -= 10.0f;
+        }
+
         //If the electrical special hits the enemy, damage it slightly and stun it for 5 seconds
         if (collider.gameObject.name.Equals("Shockwave"))
         {
             canMove = false;
-            health -= 10.0f;
             Invoke("ResumeMovement", 5.0f);
+            StopLimbs();
         }
+
         CheckDestroy();
     }
 
@@ -141,6 +154,7 @@ public class Enemy : MonoBehaviour
             health -= 0.2f;
             CheckDestroy();
             Invoke("ResumeMovement", 6f);
+            StopLimbs();
         }
         if (collider.gameObject.name.Equals("Shield"))
         {
@@ -154,6 +168,7 @@ public class Enemy : MonoBehaviour
     protected void ResumeMovement()
     {
         canMove = true;
+        MoveLimbs();
     }
 
     //See if the enemy is out of health
@@ -171,22 +186,48 @@ public class Enemy : MonoBehaviour
     private void EnemyDrops()
     {
         GameObject xpDrop = Instantiate(xpPrefab);
-        xpDrop.transform.position = transform.position;
+        xpDrop.transform.position = new Vector3(transform.position.x, playerStartPos.y + 3, transform.position.z);
 
         int hpDrop = Random.Range(0, 9);
         if (hpDrop == 0)
         {
             GameObject newDrop = Instantiate(hpPrefab);
-            newDrop.transform.position = transform.position;
+            newDrop.transform.position = new Vector3(transform.position.x, playerStartPos.y + 3, transform.position.z);
         }
     }
 
     //Knock an enemy backwards
     private void KnockBack()
     {
-        if (this.name.Equals("Enemy(Clone)"))
+        if (canMove)
         {
-            rigid.MovePosition(rigid.position - transform.forward * 2);
+            Vector3 movement = Vector3.zero;
+            if (name.Equals("IveyEnemy(Clone)") || name.Equals("IveyEnemy"))
+            {
+                movement = transform.forward;
+            }
+            if (name.Equals("GooseEnemy(Clone)") || name.Equals("GooseEnemy"))
+            {
+                if ((transform.position - currentPlayer.transform.position).magnitude <= 20.0f)
+                {
+                    movement = -transform.forward;
+                }
+                else
+                {
+                    movement = transform.forward;
+                }
+            }
+            if (name.Equals("Crab(Clone)") || name.Equals("Crab"))
+            {
+                movement = -transform.forward;
+            }
+
+            rigid.MovePosition(rigid.position - movement);
         }
+    }
+
+    public void SetMovementStatus(bool move)
+    {
+        canMove = move;
     }
 }

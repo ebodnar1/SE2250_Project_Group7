@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PoisonEffect : MonoBehaviour
 {
-    public bool poisoned;
+    private bool poisoned;
     private int poisonCount;
     private Player player;
     private bool poisonEffect;
+    private HealthBar healthBar;
 
     //The player has not been poisoned upon startup
     private void Start()
@@ -16,6 +17,7 @@ public class PoisonEffect : MonoBehaviour
         poisoned = false;
         player = GetComponent<Player>();
         poisonEffect = true;
+        healthBar = GameObject.FindGameObjectWithTag("HealthB").GetComponent<HealthBar>();
     }
 
     //If the player is poisoned and has not been damaged more than 10 times, damage them
@@ -32,6 +34,7 @@ public class PoisonEffect : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Cactus") || collider.gameObject.name.Equals("PoisonPuddle(Clone)"))
         {
+            healthBar.ChangeColour(true);
             poisoned = true;
         }
     }
@@ -42,7 +45,7 @@ public class PoisonEffect : MonoBehaviour
         //If the poison effect is true, decrement the player's health by 2 each second, turning the
         //poison effect to false between damages so that poison effects cannot stack
         if (poisonEffect) {
-            player.SetHealth(Player.GetHealth() - 2);
+            player.DamagePlayer(2);
             poisonCount++;
             poisonEffect = false;
             yield return new WaitForSeconds(1);
@@ -53,6 +56,12 @@ public class PoisonEffect : MonoBehaviour
         {
             poisoned = false;
             poisonCount = 0;
+            healthBar.ChangeColour(false);
         }
+    }
+
+    public bool isPoisoned()
+    {
+        return poisoned;
     }
 }

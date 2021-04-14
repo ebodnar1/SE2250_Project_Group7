@@ -102,7 +102,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 693919819498457001}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: d16dbcb47935b4b45adce4b22f9d0d1d, type: 2}
   m_CullingMode: 0
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 2503864471861368470}
   m_Layer: 0
   m_Name: electricalCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -610,7 +610,6 @@ GameObject:
   - component: {fileID: 3483884533845817094}
   - component: {fileID: 3355884980899366701}
   - component: {fileID: 6397328736686006222}
-  - component: {fileID: 5783364639153929333}
   - component: {fileID: 5511897858320105522}
   m_Layer: 0
   m_Name: RightArm
@@ -683,19 +682,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5783364639153929333
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4300767072374534992}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &5511897858320105522
 Animator:
   serializedVersion: 3
@@ -1330,7 +1316,6 @@ GameObject:
   - component: {fileID: 2775005964866197011}
   - component: {fileID: 5136855749445760682}
   - component: {fileID: 3492753284149348489}
-  - component: {fileID: 5527331066215071499}
   - component: {fileID: 3659112011153620960}
   m_Layer: 0
   m_Name: LeftArm
@@ -1403,19 +1388,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5527331066215071499
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8235000056639216641}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &3659112011153620960
 Animator:
   serializedVersion: 3

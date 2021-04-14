@@ -10,22 +10,6 @@ public class GooseEnemy : Enemy
     private bool canShoot;
     public GameObject tail;
 
-    private void Start()
-    {
-        //Find which player is active
-        GameObject[] possiblePlayers = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < possiblePlayers.Length; i++)
-        {
-            if (possiblePlayers[i].activeInHierarchy)
-            {
-                currentPlayer = possiblePlayers[i];
-            }
-        }
-
-        playerTransform = currentPlayer.transform;
-        canMove = true;
-    }
-
     //Attack if the enemy is within 20 points of distance of the player, otherwise keep moving
     public override void LateUpdate()
     {

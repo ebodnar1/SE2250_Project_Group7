@@ -87,4 +87,10 @@ public class CharacterSelector : MonoBehaviour
         PlayerPrefs.SetInt("CharacterSelect", index);
         SceneManager.LoadScene("Scene1");
     }
+
+    public void GoBackScene()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
 }

@@ -90,7 +90,6 @@ GameObject:
   - component: {fileID: 5225044775781159042}
   - component: {fileID: 1359302638730323490}
   - component: {fileID: 1991398724467026720}
-  - component: {fileID: 3537522234686281996}
   - component: {fileID: 1939684267779963521}
   m_Layer: 0
   m_Name: RightArm
@@ -163,19 +162,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &3537522234686281996
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123887992075252662}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &1939684267779963521
 Animator:
   serializedVersion: 3
@@ -285,7 +271,7 @@ GameObject:
   - component: {fileID: 3072122023627165970}
   m_Layer: 0
   m_Name: chemicalCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -411,7 +397,6 @@ GameObject:
   - component: {fileID: 2731233983568481589}
   - component: {fileID: 801593064058868454}
   - component: {fileID: 1336188645353510335}
-  - component: {fileID: 2484747846942645707}
   - component: {fileID: 3047091915655154065}
   m_Layer: 0
   m_Name: LeftArm
@@ -484,19 +469,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2484747846942645707
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3215386215417439003}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &3047091915655154065
 Animator:
   serializedVersion: 3

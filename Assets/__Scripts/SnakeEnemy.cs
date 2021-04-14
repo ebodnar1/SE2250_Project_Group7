@@ -11,18 +11,9 @@ public class SnakeEnemy : Enemy
     private Transform startPos;
     private bool isMoving;
     
-    void Start()
+    private void Start()
     {
-
-        //Find which player is active
-        GameObject[] possiblePlayers = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < possiblePlayers.Length; i++)
-        {
-            if (possiblePlayers[i].activeInHierarchy)
-            {
-                currentPlayer = possiblePlayers[i];
-            }
-        }
+        base.GetPlayer();
 
         //The snake starts below ground and can 'move' and shoot
         canShoot = true;
@@ -65,7 +56,7 @@ public class SnakeEnemy : Enemy
                 StartCoroutine(Move(new Vector3(startPos.position.x, -8, startPos.position.z), 0.3f));
             }
             //If the player is further than 50 units of distance, move the snake below ground over 2 seconds
-            else if ((currentPlayer.transform.position - transform.position).magnitude >= 50.0f && aboveGround)
+            else if ((currentPlayer.transform.position - transform.position).magnitude > 50.0f && aboveGround)
             {
                 StartCoroutine(Move(new Vector3(startPos.position.x, -8, startPos.position.z), 2));
             }

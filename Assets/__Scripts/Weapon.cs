@@ -5,47 +5,18 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private GameObject currentWeapon;
-    public float projSpeed = 20.0f;
+    private float projSpeed = 20.0f;
     public GameObject projectile;
     public GameObject potion;
 
-    private GameObject[] limbs;
-    private Animator[] animators;
-    private Animator[] rightArms;
     private Animator attackArm;
+    private Player player;
 
     public bool canAttack;
 
     private void Awake()
     {
         canAttack = true;
-        
-
-        //Get all of the limbs (via tag)
-        limbs = GameObject.FindGameObjectsWithTag("Limb");
-        //Arrays for regular walking limbs (legs and left arms) and attacking limbs (right arms)
-        animators = new Animator[limbs.Length - 3];
-        rightArms = new Animator[3];
-
-        //Initialize the animators array with all of the animations
-        int count = 0;
-        int j = 0;
-        for (int i = 0; i < limbs.Length; i++)
-        {
-            //If there is a right arm, add it to its own special array
-            if (limbs[i].name.Equals("RightArm"))
-            {
-                rightArms[j] = limbs[i].GetComponent<Animator>();
-                rightArms[j].enabled = false;
-                j++;
-            }
-            //Add any other limbs to the animators array
-            else
-            {
-                animators[count] = limbs[i].GetComponent<Animator>();
-                count++;
-            }
-        }
     }
 
     //Find the current weapon and get the attack arm of the character
@@ -60,12 +31,21 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < rightArms.Length; i++)
+        player = GetComponent<Player>();
+
+        //Enable the limbs but disable any children animators (shockwave, exploder)
+        Animator[] limbs = player.GetComponentsInChildren<Animator>();
+        foreach (Animator limb in limbs)
         {
-            if (rightArms[i].gameObject.activeInHierarchy)
+            limb.enabled = true;
+            if (limb.gameObject.name.Equals("RightArm"))
             {
-                attackArm = rightArms[i];
-                break;
+                attackArm = limb;
+                limb.enabled = false;
+            }
+            if (limb.gameObject.name.Equals("Exploder") || limb.gameObject.name.Equals("Shockwave"))
+            {
+                limb.enabled = false;
             }
         }
     }
@@ -75,15 +55,15 @@ public class Weapon : MonoBehaviour
         //Press 'z' to attack
         if (Input.GetKeyDown("z") && canAttack)
         {
-            switch (currentWeapon.name)
-            {
-                case ("GunTest"):
+            switch (player.GetActivePlayer().name)
+            { 
+                case ("electricalCharacter"):
                     ElectricalAttack();
                     break;
-                case ("GirderWeapon"):
+                case ("civilCharacter"):
                     StartCoroutine(CivilAttack());
                     break;
-                case ("Potion"):
+                case ("chemicalCharacter"):
                     StartCoroutine(ChemicalAttack());
                     break;
             }
@@ -91,7 +71,7 @@ public class Weapon : MonoBehaviour
     }
 
     //Instantiates 3 projectiles at the gun's tip and shoots them in a burst of a small random angle 
-    void ElectricalAttack()
+    private void ElectricalAttack()
     {
         GameObject proj1 = Instantiate(projectile);
 
@@ -115,7 +95,7 @@ public class Weapon : MonoBehaviour
         canAttack = true;
     }
 
-    //Creates a floating chemical that explodes after 3 seconds
+    //Creates a chemical vial that explodes after 3 seconds
     IEnumerator ChemicalAttack()
     {
         canAttack = false;
@@ -125,13 +105,14 @@ public class Weapon : MonoBehaviour
         GameObject newPotion = Instantiate(potion);
         newPotion.transform.position = currentWeapon.transform.position;
         Rigidbody rig = newPotion.GetComponent<Rigidbody>();
+        rig.velocity = (transform.forward + transform.up).normalized * 10f;
 
         yield return new WaitForSeconds(0.5f);
 
         attackArm.enabled = false;
         canAttack = true;
 
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(2.0f);
         Explode(newPotion);
     }
 
@@ -139,10 +120,10 @@ public class Weapon : MonoBehaviour
      Play the exploding animation and enable the isTrigger collider, destroying the
      'bomb' after 1s (length of animation)
     */
-    void Explode(GameObject bomb)
+    private void Explode(GameObject bomb)
     {
-        bomb.GetComponent<SphereCollider>().enabled = true;
-        bomb.transform.position = bomb.transform.position;
+        SphereCollider col = bomb.GetComponentsInChildren<SphereCollider>()[1];
+        col.enabled = true;
         Animator explosion = bomb.GetComponentInChildren<Animator>();
         explosion.enabled = true;
 

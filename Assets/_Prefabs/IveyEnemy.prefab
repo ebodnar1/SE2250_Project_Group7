@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 6824303217910784988}
   - component: {fileID: 6824303217910784978}
   - component: {fileID: 3688669638544398086}
+  - component: {fileID: 2151682648520972535}
   m_Layer: 0
   m_Name: IveyEnemy
   m_TagString: Enemy
@@ -169,6 +170,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3, y: 1.3, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2151682648520972535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824303217910784987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4349ae590b0a8498bec819ec2dd88c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackStrength: 10
 --- !u!95 &5200016974964072947
 Animator:
   serializedVersion: 3

@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 4146713963658877741}
   m_Layer: 0
   m_Name: Crab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: -8734923403955434913}
   rotationSpeed: 300
-  moveSpeed: 15
+  moveSpeed: 12
   health: 20
   xpPrefab: {fileID: 8781179573736628338, guid: f86d603a80dce467d8c028d4eec29195,
     type: 3}

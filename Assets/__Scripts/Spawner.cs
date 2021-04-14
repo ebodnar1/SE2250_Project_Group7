@@ -10,20 +10,22 @@ public class Spawner : MonoBehaviour
     public GameObject currentPlayer;
 
     //Allows for toggling spawners on and off
-    public bool canSpawn;
+    private bool canSpawn;
     private bool cooldown;
+    private bool maximum;
 
     //Start the spawning, allow enemies to spawn
     void Awake()
     {
-        canSpawn = true;
         Invoke("SpawnEnemy", 1f / spawnsPerSecond);
+        canSpawn = true;
+        maximum = false;
     }
 
     //If enemies can spawn, invoke the spawn function
     private void FixedUpdate()
     {
-        if (canSpawn)
+        if (canSpawn && !maximum)
         {
             StartCoroutine(SpawnEnemy());
         }
@@ -41,6 +43,23 @@ public class Spawner : MonoBehaviour
             spawned.transform.position = transform.position;
             yield return new WaitForSeconds(1 / spawnsPerSecond);
             cooldown = false;
+
+            GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            int enemyCount = activeEnemies.Length;
+
+            foreach(GameObject enem in activeEnemies)
+            {
+                if(enem.transform.parent != null && enem.transform.parent.name.Equals("Snakes"))
+                {
+                    enemyCount--;
+                }
+            }
         }
+    }
+
+    //Toggle spawning on or off
+    public void SetSpawningStatus(bool truth)
+    {
+        canSpawn = truth;
     }
 }

@@ -10,6 +10,7 @@ public class CameraControl : MonoBehaviour
      * public GameObject to represent the player and private 
      * 3D vector to represent the offset of the camera from the player
     */
+    private Player p;
     public GameObject player;
     private Vector3 offset;
     public float damping = 5;
@@ -17,6 +18,9 @@ public class CameraControl : MonoBehaviour
     //For pickup tracking and instantiating
     public GameObject pickupPrefab;
     private GameObject[] activePickups;
+    private GameObject[] startingPickups;
+    private float timeElapsed;
+    int currentNum;
 
     //Determines initial offset of the camera from the player
     void Start()
@@ -32,7 +36,13 @@ public class CameraControl : MonoBehaviour
             StartLevel2();
         }
 
+        timeElapsed = 0;
+
         activePickups = GameObject.FindGameObjectsWithTag("Pickup");
+        startingPickups = activePickups;
+        p = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>(); 
+
+        currentNum = activePickups.Length + 1;
     }
 
     /*
@@ -53,6 +63,7 @@ public class CameraControl : MonoBehaviour
         transform.LookAt(player.transform);
 
         CheckPickups();
+        CheckTiming();
     }
 
     //Check if there are any active pickups in the scene, and change the scene if there aren't
@@ -61,6 +72,39 @@ public class CameraControl : MonoBehaviour
         if (GetRemainingPickups() == 0)
         {
             Invoke("ChangeScene", 2.0f);
+            timeElapsed = 0.0f;
+        }
+    }
+
+    private void CheckTiming()
+    {
+        //After 1.5 minutes guide the player to the pickups
+        if(timeElapsed < 90.0f)
+        {
+            timeElapsed += Time.deltaTime;
+        }
+
+        //Put beacons at the point of each pickup
+        if(timeElapsed >= 90.0f && currentNum != activePickups.Length)
+        {
+            //Find the active beacons
+            MeshRenderer[] beacons = GameObject.Find("Beacons").GetComponentsInChildren<MeshRenderer>();
+
+            //Enable it if the pickup is still on the map
+            for(int i = 0; i < beacons.Length; i++)
+            {
+                if (startingPickups[i] != null)
+                {
+                    beacons[i].enabled = true;
+                }
+                else
+                {
+                    beacons[i].enabled = false;
+                }
+            }
+
+            //Reconcile the numbers
+            currentNum = activePickups.Length;
         }
     }
 
@@ -75,10 +119,13 @@ public class CameraControl : MonoBehaviour
 
         if (currentScene.Equals("Scene2"))
         {
-            nextScene = "Scene3";
+            nextScene = "GameEnd";
         }
 
         SceneManager.LoadScene(nextScene);
+
+        //Heal the player
+        p.SetHealth(Player.GetMaxHealth());
     }
 
     public int GetRemainingPickups()
@@ -89,9 +136,6 @@ public class CameraControl : MonoBehaviour
     private void StartLevel1()
     {
         //Instantiate 6 pickup items for progression
-
-        //COMMENTED OUT SO I CAN PASS LEVEL 1 EASIER
-        /*
         GameObject newObj1 = Instantiate(pickupPrefab);
         newObj1.transform.position = new Vector3(-95, 3, 95);
 
@@ -106,8 +150,6 @@ public class CameraControl : MonoBehaviour
 
         GameObject newObj5 = Instantiate(pickupPrefab);
         newObj5.transform.position = new Vector3(-6, 15, 60);
-        */
-
         GameObject newObj6 = Instantiate(pickupPrefab);
         newObj6.transform.position = new Vector3(7, 15, -30);
     }

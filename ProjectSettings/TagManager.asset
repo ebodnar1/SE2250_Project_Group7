@@ -14,6 +14,11 @@ TagManager:
   - Pickup
   - Potion
   - Cactus
+  - Chemical
+  - Civil
+  - Electrical
+  - HealthB
+  - Obstacle
   layers:
   - Default
   - TransparentFX

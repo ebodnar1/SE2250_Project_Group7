@@ -11,15 +11,7 @@ public class CrabEnemy : Enemy
         explosion = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
 
-        //Find which player is active
-        GameObject[] possiblePlayers = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < possiblePlayers.Length; i++)
-        {
-            if (possiblePlayers[i].activeInHierarchy)
-            {
-                currentPlayer = possiblePlayers[i];
-            }
-        }
+        base.GetPlayer();
 
         canMove = true;
     }
@@ -30,7 +22,7 @@ public class CrabEnemy : Enemy
         Move();
 
         //If the crab is within 4m of the player, explode it
-        if ((currentPlayer.transform.position - transform.position).magnitude <= 4.0f)
+        if ((currentPlayer.transform.position - transform.position).magnitude <= 3.0f)
         {
             StartCoroutine(ExplodeAnimation());
         }
@@ -38,7 +30,7 @@ public class CrabEnemy : Enemy
 
 
     private void Move()
-    {
+    { 
         if (canMove)
         {
             //Move the crab towards the player (and face it forwards)

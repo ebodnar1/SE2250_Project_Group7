@@ -7,9 +7,10 @@ public class TerrainControl : MonoBehaviour
     //Destroy a projectile if it hits a piece of terrain
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Projectile"))
+        if (collider.gameObject.CompareTag("Projectile") || collider.gameObject.name.Equals("GooseProjectile(Clone)"))
         {
-            Destroy(collider.gameObject, 0.0f);
+            Destroy(collider.gameObject);
         }
+        
     }
 }

@@ -854,7 +854,6 @@ GameObject:
   - component: {fileID: 5780778658142813126}
   - component: {fileID: 2033112715715145305}
   - component: {fileID: 2538138815088399527}
-  - component: {fileID: 6585340760131968148}
   - component: {fileID: 3259793694868296102}
   m_Layer: 0
   m_Name: RightArm
@@ -926,19 +925,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &6585340760131968148
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3561460897108209689}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &3259793694868296102
 Animator:
   serializedVersion: 3
@@ -1417,7 +1403,6 @@ GameObject:
   - component: {fileID: 7978045628251995826}
   - component: {fileID: 180213425229113373}
   - component: {fileID: 1827565416181536871}
-  - component: {fileID: 2931952407443079013}
   - component: {fileID: 814599474839486362}
   m_Layer: 0
   m_Name: LeftArm
@@ -1489,19 +1474,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2931952407443079013
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5642628338392802988}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &814599474839486362
 Animator:
   serializedVersion: 3
@@ -1767,6 +1739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7537906228718791640}
+  - component: {fileID: -6725197068710204440}
   m_Layer: 0
   m_Name: IveyModel
   m_TagString: Untagged
@@ -1805,6 +1778,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &-6725197068710204440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7194453587740373346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4349ae590b0a8498bec819ec2dd88c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackStrength: 5
 --- !u!1 &7421196656801708702
 GameObject:
   m_ObjectHideFlags: 0

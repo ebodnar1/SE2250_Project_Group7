@@ -24,6 +24,7 @@ public class DeathHandle : MonoBehaviour
         if (died == true)
         {
             deathScreen.SetActive(true);
+            player.canMove = false;
         }
         else
         {
@@ -40,6 +41,7 @@ public class DeathHandle : MonoBehaviour
         if(Player.GetHealth() <= 0)
         {
             died = true;
+            Destroy(player);
         }
     }
 
